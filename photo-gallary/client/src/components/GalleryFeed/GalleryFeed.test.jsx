@@ -45,7 +45,23 @@ describe('GalleryFeed Component [CORE][UX+]', () => {
     vi.restoreAllMocks();
   });
 
-  it('renders initial photos and bottom sentinel element', async () => {
+  it('renders 5 skeleton placeholder rows on initial load', () => {
+    // Hang the initial fetch unresolved to keep loading state active
+    fetchModule.fetchPhotos.mockReturnValueOnce(new Promise(() => {}));
+
+    render(
+      <GalleryProvider>
+        <GalleryFeed />
+      </GalleryProvider>
+    );
+
+    const skeletons = screen.getAllByRole('status', {
+      name: /loading photograph placeholder/i,
+    });
+    expect(skeletons).toHaveLength(5);
+  });
+
+  it('renders initial photos and bottom sentinel element after fetch completes', async () => {
     render(
       <GalleryProvider>
         <GalleryFeed />
@@ -91,8 +107,32 @@ describe('GalleryFeed Component [CORE][UX+]', () => {
     });
   });
 
+  it('renders 1 pagination skeleton below sentinel while next page is loading', async () => {
+    render(
+      <GalleryProvider>
+        <GalleryFeed />
+      </GalleryProvider>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText(/author:\s*alejandro escamilla/i)).toBeInTheDocument();
+    });
+
+    // Return unresolved promise to freeze pagination loading state
+    fetchModule.fetchPhotos.mockReturnValueOnce(new Promise(() => {}));
+
+    const observer = window.IntersectionObserver.instances.at(-1);
+    await act(async () => {
+      observer.triggerIntersect(true);
+    });
+
+    const skeletons = screen.getAllByRole('status', {
+      name: /loading photograph placeholder/i,
+    });
+    expect(skeletons).toHaveLength(1);
+  });
+
   it('displays end of gallery notification when hasMore is false', async () => {
-    // Initial fetch returns page 1
     render(
       <GalleryProvider>
         <GalleryFeed />

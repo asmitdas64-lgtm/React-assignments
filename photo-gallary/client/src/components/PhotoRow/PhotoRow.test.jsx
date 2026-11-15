@@ -1,9 +1,9 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 import { PhotoRow } from './PhotoRow.jsx';
 
-describe('PhotoRow Component [CORE]', () => {
+describe('PhotoRow Component [CORE][UX+]', () => {
   const samplePhoto = {
     id: '0',
     author: 'Vadim Sherbakov',
@@ -32,6 +32,28 @@ describe('PhotoRow Component [CORE]', () => {
     const likeBtn = screen.getByRole('button', { name: /thumbs up/i });
     expect(likeBtn).toBeInTheDocument();
     expect(screen.getByText('0')).toBeInTheDocument();
+  });
+
+  it('handles image load event and adds loaded class for zero-CLS fade-in', () => {
+    render(<PhotoRow photo={samplePhoto} likes={0} onLike={vi.fn()} />);
+
+    const wrapper = document.querySelector('.photo-thumbnail-wrapper');
+    expect(wrapper).not.toHaveClass('loaded');
+
+    const img = screen.getByRole('img');
+    fireEvent.load(img);
+
+    expect(wrapper).toHaveClass('loaded');
+  });
+
+  it('handles image error event and displays safe fallback placeholder', () => {
+    render(<PhotoRow photo={samplePhoto} likes={0} onLike={vi.fn()} />);
+
+    const img = screen.getByRole('img');
+    fireEvent.error(img);
+
+    expect(screen.getByLabelText(/image failed to load/i)).toBeInTheDocument();
+    expect(screen.queryByRole('img')).not.toBeInTheDocument();
   });
 
   it('safely renders author string without DOM injection (anti-XSS)', () => {
