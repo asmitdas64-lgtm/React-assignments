@@ -1,34 +1,43 @@
 # Full-Stack Real-Time Chat Application
 
-A production-grade, single-page React chat application built **intentionally beyond the assignment brief** for a UI Engineering Internship evaluation.
+A production-grade, single-page React chat application built to rigorous full-stack standards for a UI Engineering evaluation.
 
-Engineered with strict **Test-Driven Development (TDD)**, zero external UI framework dependencies (pure CSS with design tokens), end-to-end type validation using **Zod**, production-hardened web security (anti-XSS, rate limiting, prototype-pollution defenses), and bidirectional real-time synchronization powered by **Express** and **Socket.io**.
+Engineered with strict Test-Driven Development (TDD), zero external UI framework dependencies (pure CSS with design tokens), end-to-end payload validation using Zod, production-hardened web security (anti-XSS, rate limiting, prototype-pollution defenses), and bidirectional real-time synchronization powered by Express and Socket.io.
 
 ---
 
-## 🎯 Architectural Highlights & Feature Matrix
+## Visual Demonstration
 
-### 1. `[CORE]` Brief Baseline Requirements
+| Chat Application Main Interface | Integrated Emoji Picker Popover |
+| :---: | :---: |
+| ![Chat Application Main View](docs/assets/screenshots/chat-app-main-view.png) | ![Chat Application with Emoji Picker](docs/assets/screenshots/chat-app-emoji-picker.png) |
+| *Desktop sidebar with profile card, conversation channels, chronological message feed, and inline likes* | *Accessible emoji picker popover with caret insertion and dark theme styling* |
+
+---
+
+## Architectural Highlights & Feature Matrix
+
+### 1. Brief Baseline Requirements [CORE]
 - **Single-Page Application (SPA)**: Pure React architecture with zero router (`react-router`) dependencies.
 - **Message Positioning**: Sent messages display in a chronological thread **strictly above the input textbox**.
-- **Random Author Assignment**: For every sent message, the author is non-deterministically selected strictly from:
+- **Random Author Assignment**: For every sent message, the author is selected at random from the five fixed users:
   ```javascript
-  const user_list = ["Alan", "Bob", "Carol", "Dean", "Elin"];
+  export const user_list = ["Alan", "Bob", "Carol", "Dean", "Elin"];
   ```
 - **Like Counter with Instant Feedback**: Like button placed at the right-hand boundary of every message bubble, featuring a micro-animated `like-pop` bounce effect (`+1` per click) and real-time synchronization.
 
-### 2. `[SIDEBAR]` Desktop & Responsive Experience
-- **Pixel-Accurate Sidebar**: 300px fixed layout on desktop featuring a display-only `CURRENT_USER` profile card with active status indicator.
-- **Dynamic Conversations**: Pre-seeded channels (`#general`, `#engineering`, `#product`, `#design`, `#random`) with active channel highlight, isolated state per channel, unread tracking, and inline `+` channel creation.
+### 2. Desktop & Responsive Experience [SIDEBAR]
+- **Pixel-Accurate Sidebar**: 300px fixed layout on desktop featuring a display-only profile card (`User`, `Member`, `US` avatar) with active status indicator.
+- **Dynamic Conversations**: Pre-seeded channels (`Poland Office`, `Introductions`, `India Office`) with active channel highlight, isolated state per channel, unread tracking, and inline `+` channel creation.
 - **Chat Header**: Displays channel name, topic description, and real-time online presence counter (`${onlineCount} | 5`).
 - **Responsive Drawer (<900px)**: Collapses cleanly into a mobile drawer with hamburger toggle button, backdrop dismiss, `Escape` key capture, and accessible focus restoration.
 
-### 3. `[CORE+]` Extended Product Capabilities
+### 3. Extended Product Capabilities [CORE+]
 - **Emoji Picker**: Lazy-loaded `@emoji-mart/react` with custom dark-theme styling, accessible popover dialog, outside-click detection, and caret-accurate insertion into the textbox.
-- **Smart `@mentions` Autocomplete**: Typing `@` opens an inline, keyboard-navigable listbox filtering the 5 valid users from `user_list`. Supports Arrow keys (`ArrowUp`, `ArrowDown`), `Enter`, `Tab`, and mouse selection. Rendered in chat bubbles as safe, highlighted `@mention` pills.
+- **Smart @mentions Autocomplete**: Typing `@` opens an inline, keyboard-navigable listbox filtering the 5 valid users from `user_list`. Supports Arrow keys (`ArrowUp`, `ArrowDown`), `Enter`, `Tab`, and mouse selection. Rendered in chat bubbles as safe, highlighted `@mention` pills.
 - **Offline / Local Fallback**: When the Socket.io server is unreachable or disconnected, the application seamlessly degrades to client-side local mode without throwing unhandled exceptions or disrupting user messaging.
 
-### 4. `[SECURITY]` Production Hardening Audit
+### 4. Production Hardening Audit [SECURITY]
 | Requirement | Defense Strategy | Implementation Location |
 | :--- | :--- | :--- |
 | **F1: Schema Validation** | Zod schemas validate channel names, message length (`1..500`), and socket payloads | `client/src/validation/schemas.js`, `server/schemas.js` |
@@ -40,29 +49,29 @@ Engineered with strict **Test-Driven Development (TDD)**, zero external UI frame
 
 ---
 
-## 📡 Real-Time Socket Event Contract
+## Real-Time Socket Event Contract
 
 Both client and server adhere to a strict event protocol:
 
 | Direction | Event Name | Payload | Description |
 | :--- | :--- | :--- | :--- |
-| Client ➔ Server | `channel:join` | `{ channelId: string }` | Joins a channel room and receives room history |
-| Server ➔ Client | `channel:joined` | `{ channelId: string }` | Confirms room admission |
-| Client ➔ Server | `message:send` | `{ channelId: string, text: string }` | Dispatches new message (server enforces author & ID) |
-| Server ➔ Client | `message:new` | `MessageObject` | Broadcasts newly stored message to channel room |
-| Client ➔ Server | `message:like` | `{ channelId: string, messageId: string }` | Dispatches like increment request |
-| Server ➔ Client | `message:updated`| `{ channelId: string, messageId: string, likes: number }` | Broadcasts updated like count to channel room |
-| Client ➔ Server | `channel:create` | `{ name: string }` | Creates a new channel |
-| Server ➔ Client | `channel:created` | `ChannelObject` | Confirms channel creation to creator |
-| Server ➔ Client | `channels:updated`| `ChannelObject[]` | Broadcasts updated channel list globally |
-| Server ➔ Client | `presence:count` | `number` | Real-time count of connected sockets in active room |
-| Server ➔ Client | `chat:error` | `{ code: string, message: string }` | Dispatched on validation or rate limit failure |
+| Client to Server | `channel:join` | `{ channelId: string }` | Joins a channel room and receives room history |
+| Server to Client | `channel:joined` | `{ channelId: string }` | Confirms room admission |
+| Client to Server | `message:send` | `{ channelId: string, text: string }` | Dispatches new message (server enforces author & ID) |
+| Server to Client | `message:new` | `MessageObject` | Broadcasts newly stored message to channel room |
+| Client to Server | `message:like` | `{ channelId: string, messageId: string }` | Dispatches like increment request |
+| Server to Client | `message:updated`| `{ channelId: string, messageId: string, likes: number }` | Broadcasts updated like count to channel room |
+| Client to Server | `channel:create` | `{ name: string }` | Creates a new channel |
+| Server to Client | `channel:created` | `ChannelObject` | Confirms channel creation to creator |
+| Server to Client | `channels:updated`| `ChannelObject[]` | Broadcasts updated channel list globally |
+| Server to Client | `presence:count` | `number` | Real-time count of connected sockets in active room |
+| Server to Client | `chat:error` | `{ code: string, message: string }` | Dispatched on validation or rate limit failure |
 
 ---
 
-## 🧪 Comprehensive Test Coverage (TDD)
+## Comprehensive Test Coverage (TDD)
 
-The entire codebase was constructed following strict Test-Driven Development (Red ➔ Green ➔ Refactor). All 15 test suites and 72 tests pass with zero warnings:
+The entire codebase was constructed following strict Test-Driven Development (Red to Green to Refactor). All 15 test suites and 72 tests pass with zero warnings:
 
 ```
 Test Files  15 passed (15)
@@ -97,15 +106,13 @@ Test Files  15 passed (15)
 
 ---
 
-## 🚀 Quickstart & Local Setup
+## Quickstart & Local Setup
 
 ### Prerequisites
-- Node.js `v18+` or `v20+`
-- npm `v9+`
+- Node.js v18 or higher
+- npm v9 or higher
 
 ### Installation
-
-Clone the repository and install dependencies across the monorepo:
 
 ```bash
 # From the project root
@@ -144,7 +151,7 @@ npm --prefix server test
 
 ### Linting & Code Quality
 
-Run fast static analysis using `oxlint`:
+Run static analysis using `oxlint`:
 
 ```bash
 npm run lint
@@ -160,7 +167,7 @@ npm run build
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 chat-app/
@@ -197,13 +204,13 @@ chat-app/
 
 ---
 
-## 🔒 Verification & Compliance Summary
+## Verification & Compliance Summary
 
-- [x] **Core Brief Compliant**: Textbox + Send button, messages render above input, author selected at random from `user_list`, like button with counter.
-- [x] **No Router**: Strictly SPA.
-- [x] **Sidebar Design Matching**: 300px fixed desktop sidebar with profile card, channel selector, responsive drawer for viewport `<900px`.
-- [x] **Emoji Picker**: Lazy-loaded dark popover with caret insertion.
-- [x] **@mentions**: Keyboard-navigable autocomplete listbox, safe pill highlighting.
-- [x] **Real-Time Backend**: Express + Socket.io room orchestration with persistent Map storage.
-- [x] **Zero XSS**: Complete avoidance of raw HTML injection.
-- [x] **100% Test Passing**: 72 tests across 15 test suites.
+- **Core Brief Compliant**: Textbox + Send button, messages render above input, author selected at random from `user_list` (Alan, Bob, Carol, Dean, Elin), like button with counter.
+- **No Router**: Strictly SPA.
+- **Sidebar Design Matching**: 300px fixed desktop sidebar with profile card, channel selector, responsive drawer for viewport `<900px`.
+- **Emoji Picker**: Lazy-loaded dark popover with caret insertion.
+- **@mentions**: Keyboard-navigable autocomplete listbox, safe pill highlighting.
+- **Real-Time Backend**: Express + Socket.io room orchestration with persistent Map storage.
+- **Zero XSS**: Complete avoidance of raw HTML injection.
+- **100% Test Passing**: 72 tests across 15 test suites.
