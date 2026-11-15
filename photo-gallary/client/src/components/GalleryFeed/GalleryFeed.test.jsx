@@ -116,6 +116,7 @@ describe('GalleryFeed Component [CORE][UX+]', () => {
 
     await waitFor(() => {
       expect(screen.getByText(/author:\s*alejandro escamilla/i)).toBeInTheDocument();
+      expect(screen.getByTestId('infinite-scroll-sentinel')).toBeInTheDocument();
     });
 
     // Return unresolved promise to freeze pagination loading state

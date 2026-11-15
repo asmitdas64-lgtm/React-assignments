@@ -20,7 +20,7 @@ export function usePicsumFeed() {
 
   // Load a specific page with concurrency & deduplication guard
   const loadPage = useCallback(
-    async (pageToLoad, signal) => {
+    async (pageToLoad) => {
       if (inFlightRef.current || !hasMore) return;
 
       inFlightRef.current = true;
@@ -30,13 +30,10 @@ export function usePicsumFeed() {
         const newPhotos = await fetchPhotos({
           page: pageToLoad,
           limit: DEFAULT_PAGE_LIMIT,
-          signal,
         });
         fetchSuccess(newPhotos);
       } catch (err) {
-        if (err.name !== 'AbortError') {
-          fetchError(err.message);
-        }
+        fetchError(err.message);
       } finally {
         inFlightRef.current = false;
       }
@@ -58,15 +55,9 @@ export function usePicsumFeed() {
 
   // Initial mount load if photos array is empty
   useEffect(() => {
-    const controller = new AbortController();
-
-    if (photos.length === 0 && !inFlightRef.current) {
-      loadPage(1, controller.signal);
+    if (photos.length === 0) {
+      loadPage(1);
     }
-
-    return () => {
-      controller.abort();
-    };
   }, [photos.length, loadPage]);
 
   return {
