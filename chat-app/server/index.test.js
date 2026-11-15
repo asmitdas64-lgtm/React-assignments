@@ -118,7 +118,9 @@ describe("Socket.io Chat Server Realtime & Security Contract [CORE+] E, [SECURIT
 
     // Both client 1 and client 3 in introductions receive the like update
     const client3 = await createClient();
+    const joinPromise = new Promise((resolve) => client3.once("messages:history", resolve));
     client3.emit("channel:join", { channelId: "introductions" });
+    await joinPromise;
 
     const likePromise = new Promise((resolve) => {
       client3.once("message:updated", (update) => resolve(update));
