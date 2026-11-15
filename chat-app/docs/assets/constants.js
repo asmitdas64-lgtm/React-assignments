@@ -17,8 +17,8 @@ export const AVATAR_COLORS = {
 
 // Sidebar profile card. Display only: NEVER used as a message author.
 export const CURRENT_USER = {
-  name: "Asmit Das",
-  role: "UI Engineering Intern",
+  name: "User",
+  role: "Member",
   color: "#F08A8A",
 };
 
@@ -65,7 +65,7 @@ export const RATE_LIMITS = {
 export const getRandomUser = () =>
   user_list[Math.floor(Math.random() * user_list.length)];
 
-// "Alan" -> "AL", "Asmit Das" -> "AD"
+// "Alan" -> "AL", "John Doe" -> "JD"
 export const getInitials = (name) => {
   const words = name.trim().split(/\s+/);
   const initials =

@@ -10,8 +10,8 @@ export const AVATAR_COLORS = {
 };
 
 export const CURRENT_USER = {
-  name: "Asmit Das",
-  role: "UI Engineering Intern",
+  name: "User",
+  role: "Member",
   color: "#F08A8A",
 };
 
