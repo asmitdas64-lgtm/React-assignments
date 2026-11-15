@@ -1,0 +1,23 @@
+.gallery-header {
+  padding: 32px 0 24px 0;
+  display: flex;
+  justify-content: flex-end; /* Matches reference image where heading sits towards right */
+  width: 100%;
+  max-width: var(--container-max-width);
+}
+
+.gallery-header-title {
+  font-family: var(--font-family-heading);
+  font-size: var(--fs-title);
+  font-weight: var(--fw-bold);
+  color: var(--text-title);
+  margin: 0;
+  line-height: 1.2;
+}
+
+@media (max-width: 600px) {
+  .gallery-header {
+    justify-content: center;
+    padding: 24px 0 16px 0;
+  }
+}
