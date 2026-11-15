@@ -49,7 +49,7 @@ A single-page **React Photo Gallery** application with infinite scroll, built fo
 ## 4. Folder Structure (target, final)
 
 ```
-gallery/
+photo-gallery/
 ├─ README.md                    # Production documentation, setup & test matrix
 ├─ package.json                 # Project dependencies & scripts
 ├─ docs/                        # Specifications and design references (source of truth)

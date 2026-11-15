@@ -9,7 +9,7 @@ Every coding phase follows strict **Test-Driven Development (TDD)**:
 ---
 
 ## Phase 0: Project Scaffold & Test Setup (≈25 min)
-- [ ] Create Vite React app: `npm create vite@latest client -- --template react` in `gallery/`
+- [ ] Create Vite React app: `npm create vite@latest client -- --template react` in `photo-gallery/`
 - [ ] Install dependencies in `client/`:
   - `npm install zod @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons`
   - `npm install -D vitest @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom oxlint`
@@ -19,7 +19,7 @@ Every coding phase follows strict **Test-Driven Development (TDD)**:
 - [ ] Copy `docs/assets/design-tokens.css` → `src/styles/tokens.css` and `docs/assets/constants.js` → `src/constants/gallery.js`
 - [ ] Copy `docs/assets/schemas.js` → `src/validation/schemas.js` (adjust import to `../constants/gallery.js`)
 - [ ] Setup `client/src/validation/schemas.test.js` with tests verifying all Zod validation rules (valid items, invalid URLs, bad payloads)
-- [ ] Initialize git repo in `gallery/` with proper `.gitignore`
+- [ ] Initialize git repo in `photo-gallery/` with proper `.gitignore`
 
 **Done when:** `npm test` runs and passes all schema validation tests. → commit `chore: scaffold vite react app with vitest, fontawesome, and zod`
 
