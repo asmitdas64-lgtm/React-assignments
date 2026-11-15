@@ -8,10 +8,10 @@ Engineered with strict Test-Driven Development (TDD), zero external UI framework
 
 ## Visual Demonstration
 
-| Chat Application Main Interface | Integrated Emoji Picker Popover |
-| :---: | :---: |
-| ![Chat Application Main View](docs/assets/screenshots/chat-app-main-view.png) | ![Chat Application with Emoji Picker](docs/assets/screenshots/chat-app-emoji-picker.png) |
-| *Desktop sidebar with profile card, conversation channels, chronological message feed, and inline likes* | *Accessible emoji picker popover with caret insertion and dark theme styling* |
+| Chat Application Main Interface | @mentions Autocomplete List | Integrated Emoji Picker Popover |
+| :---: | :---: | :---: |
+| ![Chat Application Main View](docs/assets/screenshots/chat-app-main-view.png) | ![Mentions Autocomplete List](docs/assets/screenshots/chat-app-mentions.png) | ![Chat Application with Emoji Picker](docs/assets/screenshots/chat-app-emoji-picker.png) |
+| *Desktop sidebar with profile card, conversation channels, chronological message feed, and inline likes* | *Keyboard-navigable @mentions autocomplete filtering the 5 fixed users* | *Accessible emoji picker popover with caret insertion and dark theme styling* |
 
 ---
 
