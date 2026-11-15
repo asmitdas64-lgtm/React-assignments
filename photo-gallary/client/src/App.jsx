@@ -1,35 +1,37 @@
-import { useState } from 'react';
 import { SEED_PHOTOS } from './constants/gallery.js';
+import { GalleryProvider } from './context/GalleryContext.jsx';
+import { useGallery } from './context/useGallery.js';
 import { Header } from './components/Header/Header.jsx';
 import { PhotoRow } from './components/PhotoRow/PhotoRow.jsx';
 import './App.css';
 
-export function App() {
-  const [likes, setLikes] = useState({});
-
-  const handleLike = (photoId) => {
-    setLikes((prev) => ({
-      ...prev,
-      [photoId]: (prev[photoId] || 0) + 1,
-    }));
-  };
+function GalleryStream() {
+  const { photos, likesByPhotoId, likePhoto } = useGallery();
 
   return (
-    <div className="gallery-app-root">
-      <main className="gallery-main-container">
-        <Header />
-        <section className="gallery-stream" role="feed" aria-label="Photo gallery feed">
-          {SEED_PHOTOS.map((photo) => (
-            <PhotoRow
-              key={photo.id}
-              photo={photo}
-              likes={likes[photo.id] || 0}
-              onLike={handleLike}
-            />
-          ))}
-        </section>
-      </main>
-    </div>
+    <section className="gallery-stream" role="feed" aria-label="Photo gallery feed">
+      {photos.map((photo) => (
+        <PhotoRow
+          key={photo.id}
+          photo={photo}
+          likes={likesByPhotoId[photo.id] || 0}
+          onLike={likePhoto}
+        />
+      ))}
+    </section>
+  );
+}
+
+export function App() {
+  return (
+    <GalleryProvider initialPhotos={SEED_PHOTOS}>
+      <div className="gallery-app-root">
+        <main className="gallery-main-container">
+          <Header />
+          <GalleryStream />
+        </main>
+      </div>
+    </GalleryProvider>
   );
 }
 
