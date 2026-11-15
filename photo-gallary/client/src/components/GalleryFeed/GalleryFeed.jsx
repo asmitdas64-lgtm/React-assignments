@@ -3,6 +3,7 @@ import { useGallery } from '../../context/useGallery.js';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll.js';
 import { PhotoRow } from '../PhotoRow/PhotoRow.jsx';
 import { SkeletonRow } from '../SkeletonRow/SkeletonRow.jsx';
+import ErrorState from '../ErrorState/ErrorState.jsx';
 import { UI_TEXT, SKELETON_ITEMS_COUNT } from '../../constants/gallery.js';
 import './GalleryFeed.css';
 
@@ -21,7 +22,7 @@ export function GalleryFeed() {
 
   const sentinelRef = useInfiniteScroll({
     onIntersect: loadNextPage,
-    enabled: !isLoading && hasMore,
+    enabled: !isLoading && hasMore && !error,
   });
 
   const showInitialSkeletons = photos.length === 0 && (isLoading || isInitialLoading);
@@ -43,7 +44,7 @@ export function GalleryFeed() {
             ))}
       </div>
 
-      {hasMore && !showInitialSkeletons && (
+      {hasMore && !showInitialSkeletons && !error && (
         <div
           ref={sentinelRef}
           className="gallery-sentinel"
@@ -65,14 +66,7 @@ export function GalleryFeed() {
         </div>
       )}
 
-      {error && (
-        <div className="gallery-feed-error" role="alert">
-          <p className="error-message">{error}</p>
-          <button type="button" onClick={retry} className="error-retry-button">
-            {UI_TEXT.RETRY_BUTTON}
-          </button>
-        </div>
-      )}
+      {error && <ErrorState message={error} onRetry={retry} />}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { GalleryProvider } from './context/GalleryContext.jsx';
 import { Header } from './components/Header/Header.jsx';
 import { GalleryFeed } from './components/GalleryFeed/GalleryFeed.jsx';
+import ScrollToTop from './components/ScrollToTop/ScrollToTop.jsx';
 import './App.css';
 
 export function App() {
@@ -11,6 +12,7 @@ export function App() {
           <Header />
           <GalleryFeed />
         </main>
+        <ScrollToTop />
       </div>
     </GalleryProvider>
   );

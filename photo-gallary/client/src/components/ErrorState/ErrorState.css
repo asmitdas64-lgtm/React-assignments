@@ -1,0 +1,55 @@
+.error-state-container {
+  width: 100%;
+  padding: 16px 20px;
+  margin: 16px 0;
+  background-color: var(--danger-bg, #fff5f5);
+  border: 1px solid rgba(220, 53, 69, 0.25);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.error-state-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.error-state-message {
+  margin: 0;
+  color: var(--danger, #dc3545);
+  font-size: var(--fs-author, 15px);
+  font-family: var(--font-family-body);
+  font-weight: var(--fw-medium, 500);
+}
+
+.error-state-retry-button {
+  background-color: var(--danger, #dc3545);
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: var(--fs-sm, 13px);
+  font-family: var(--font-family-body);
+  font-weight: var(--fw-medium, 500);
+  cursor: pointer;
+  transition: background-color var(--transition-fast, 150ms ease), transform var(--transition-fast, 150ms ease);
+}
+
+.error-state-retry-button:hover {
+  background-color: #bd2130;
+  transform: translateY(-1px);
+}
+
+.error-state-retry-button:active {
+  transform: translateY(0);
+}
+
+.error-state-retry-button:focus-visible {
+  outline: 2px solid var(--thumbs-up-blue, #1877f2);
+  outline-offset: 2px;
+}

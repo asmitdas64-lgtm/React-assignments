@@ -1,0 +1,43 @@
+.scroll-to-top-button {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--thumbs-up-blue, #1877f2);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: background-color var(--transition-fast, 150ms ease), transform var(--transition-fast, 150ms ease), box-shadow var(--transition-fast, 150ms ease);
+}
+
+.scroll-to-top-button:hover {
+  background-color: var(--thumbs-up-hover, #166fe5);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(24, 119, 242, 0.35);
+}
+
+.scroll-to-top-button:active {
+  transform: translateY(0);
+}
+
+.scroll-to-top-button:focus-visible {
+  outline: 2px solid var(--text-title, #000000);
+  outline-offset: 3px;
+}
+
+.scroll-to-top-icon {
+  font-size: 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-to-top-button {
+    transition: none;
+  }
+}

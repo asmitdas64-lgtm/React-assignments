@@ -16,6 +16,7 @@ export const THUMBNAIL_ASPECT_RATIO = "3 / 2";
 // Animation & Interaction timings
 export const LIKE_POP_DURATION_MS = 300;
 export const SKELETON_ITEMS_COUNT = 5;
+export const SCROLL_TOP_THRESHOLD_PX = 400;
 
 // Fallback seed photos for offline mode / offline testing
 export const SEED_PHOTOS = [

@@ -158,4 +158,45 @@ describe('GalleryFeed Component [CORE][UX+]', () => {
     // Sentinel element is removed when hasMore is false
     expect(screen.queryByTestId('infinite-scroll-sentinel')).not.toBeInTheDocument();
   });
+
+  it('renders error state on pagination failure while preserving previously loaded photos', async () => {
+    render(
+      <GalleryProvider>
+        <GalleryFeed />
+      </GalleryProvider>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText(/author:\s*alejandro escamilla/i)).toBeInTheDocument();
+    });
+
+    // Next page fetch rejects with network error
+    fetchModule.fetchPhotos.mockRejectedValueOnce(new Error('Network offline'));
+
+    const observer = window.IntersectionObserver.instances.at(-1);
+    await act(async () => {
+      observer.triggerIntersect(true);
+    });
+
+    // Existing photos MUST still be present
+    expect(screen.getByText(/author:\s*alejandro escamilla/i)).toBeInTheDocument();
+    expect(screen.getByText(/author:\s*paul jarvis/i)).toBeInTheDocument();
+
+    // Error alert is rendered
+    const alert = await screen.findByRole('alert');
+    expect(alert).toBeInTheDocument();
+
+    const retryBtn = screen.getByRole('button', { name: /try again/i });
+    expect(retryBtn).toBeInTheDocument();
+
+    // Clicking retry attempts to re-fetch
+    fetchModule.fetchPhotos.mockResolvedValueOnce(page2Photos);
+    await act(async () => {
+      retryBtn.click();
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(/author:\s*danielle macinnes/i)).toBeInTheDocument();
+    });
+  });
 });
