@@ -5,6 +5,19 @@ if (typeof window.scrollTo !== 'function') {
   window.scrollTo = () => {};
 }
 
+// Polyfill AnimationEvent for jsdom
+if (typeof window.AnimationEvent === 'undefined') {
+  class MockAnimationEvent extends Event {
+    constructor(type, eventInitDict) {
+      super(type, { bubbles: true, cancelable: true, ...eventInitDict });
+      this.animationName = eventInitDict?.animationName || '';
+      this.elapsedTime = eventInitDict?.elapsedTime || 0;
+    }
+  }
+  window.AnimationEvent = MockAnimationEvent;
+  globalThis.AnimationEvent = MockAnimationEvent;
+}
+
 // Mock IntersectionObserver for infinite scroll testing
 class MockIntersectionObserver {
   constructor(callback) {

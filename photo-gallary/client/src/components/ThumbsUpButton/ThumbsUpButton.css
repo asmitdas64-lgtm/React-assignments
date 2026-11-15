@@ -29,11 +29,36 @@
 .thumbs-up-icon {
   font-size: 18px;
   color: var(--thumbs-up-blue);
+  transition: transform var(--transition-fast);
 }
 
 .thumbs-up-count {
   font-family: var(--font-family-body);
   font-size: var(--fs-count);
   font-weight: var(--fw-bold);
+  color: var(--thumbs-up-blue);
+}
+
+/* Micro-interaction bounce animation */
+@keyframes thumbs-bounce {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.35) rotate(-12deg);
+  }
+  70% {
+    transform: scale(0.92) rotate(4deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.thumbs-up-button.thumbs-up-bounce {
+  animation: thumbs-bounce var(--transition-bounce) forwards;
+}
+
+.thumbs-up-button.has-likes .thumbs-up-count {
   color: var(--thumbs-up-blue);
 }
