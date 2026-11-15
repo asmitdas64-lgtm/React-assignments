@@ -1,0 +1,13 @@
+{
+  "name": "photo-gallery",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Photo Gallery with infinite scroll and TDD",
+  "scripts": {
+    "dev": "npm --prefix client run dev",
+    "start": "npm --prefix client run dev",
+    "build": "npm --prefix client run build",
+    "test": "npm --prefix client test",
+    "lint": "npm --prefix client run lint"
+  }
+}
