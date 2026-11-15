@@ -1,73 +1,85 @@
-# Photo Gallery (React + Infinite Scroll + TDD)
+# Photo Gallery
 
-A production-grade, single-page React Photo Gallery application with infinite scroll, paginated API ingestion, interactive micro-animations, resilient error recovery, and robust security defenses. Built intentionally beyond the brief to match the design reference (`docs/assets/reference/photo-gallery.jpg`) with zero Cumulative Layout Shift (CLS), strict Test-Driven Development (TDD), and 100% test pass rate.
-
----
-
-## 📸 Design Alignment
-
-The visual layout adheres directly to the project reference screenshot:
-- **Title**: Clean serif `"Photo gallery"` heading at the top.
-- **Feed Structure**: Single-column vertical stack of photo items.
-- **Photo Row**:
-  - **Left**: Photo thumbnail with fixed `240px × 160px` dimensions (`3:2` aspect ratio) and smooth fade-in upon load.
-  - **Right**: Centered metadata showing `"Author: {author}"` followed by an inline blue FontAwesome thumbs-up icon (`#1877f2`) and adjacent click counter.
-- **Thumbs-Up Counter**: Starts at `0`, increments `+1` on each click without limit, and plays an energetic pop micro-animation.
+A production-grade, single-page React photo gallery featuring infinite scrolling, paginated API ingestion, micro-animations, resilient error recovery, and enterprise security defenses. Built to exact design specifications matching the project reference with zero Cumulative Layout Shift (CLS) and 100% automated test coverage via Test-Driven Development (TDD).
 
 ---
 
-## 🚀 Key Features
+## Visual Demonstration
 
-### Core Capabilities `[CORE]`
-- **Paginated Feed Ingestion**: Dynamically fetches photographs from the Picsum API (`https://picsum.photos/v2/list?page={page}&limit=10`).
-- **Infinite Scroll Sentinel**: Leverages the high-performance native `IntersectionObserver` API with a bottom sentinel element and `250px` forward lookahead root margin to fetch the next page before the user reaches the absolute bottom.
-- **Append-Only Flow**: Seamlessly appends new photos to the existing feed without re-rendering or wiping out previously loaded images.
-- **Infinite Click Counter**: Independent like counter per photo, supporting unlimited clicks and isolated state stored in React Context.
-
-### UX Enhancements `[UX+]`
-- **Zero Cumulative Layout Shift (CLS)**: Every image container strictly preserves a `3:2` (`240px × 160px`) aspect ratio with CSS `aspect-ratio: 3 / 2`, preventing page jumps as images load.
-- **Skeleton Shimmer Loaders**:
-  - Initial load renders **5 skeleton rows** with smooth horizontal CSS gradient shimmer keyframes.
-  - Subsequent pagination loads render a single skeleton loader below the existing items while the next batch is in flight.
-- **Accessible Motion**: Automatically disables shimmer and micro-bounce animations when the user has enabled `prefers-reduced-motion: reduce`.
-- **Image Fallback Handling**: Gracefully handles broken or blocked image URLs by rendering a styled, accessible placeholder indicating the image could not be loaded.
-- **Floating Scroll-To-Top**: A floating circular trigger appears when the user scrolls down past `400px`, invoking smooth scrolling to the top on click.
-- **Resilient Network Error Recovery**: If an API request fails, an accessible error alert with a **"Try Again"** button appears inline without destroying the already-rendered feed items. Clicking retry immediately re-attempts the exact failed page.
-- **End of Feed Indicator**: Gracefully notifies users when all pages are exhausted (`[]` received from API) and unhooks the observer sentinel.
-
-### Security Engineering `[SECURITY]`
-- **Zod v4 API Payload Validation**: Every incoming API payload is strictly validated through `PicsumPhotoListSchema` before entering state. Malformed fields, unexpected prototypes, or missing keys are safely caught.
-- **Image Domain Whitelisting**: Image URLs are strictly validated to originate only from allowed trusted domains (`picsum.photos`, `fastly.picsum.photos`, `images.unsplash.com`, `unsplash.com`).
-- **Anti-XSS Text Rendering**: Zero usage of `dangerouslySetInnerHTML`. Malicious script tags or HTML injection strings in author names are rendered strictly as safe text nodes.
-- **Prototype Pollution Prevention**: State management uses immutable operations and safe identifier mapping (`likesByPhotoId[id]`) guarding against `__proto__` and constructor tampering.
-- **Concurrency & Race Condition Deduplication**: In-flight request guards (`inFlightRef`) prevent redundant network requests when sentinel triggers rapidly.
+| Initial Feed View | Infinite Scroll & Scroll-to-Top | Design Reference |
+| :---: | :---: | :---: |
+| ![Initial Feed View](docs/assets/screenshots/gallery-initial-feed.jpg) | ![Infinite Scroll View](docs/assets/screenshots/gallery-infinite-scroll.jpg) | ![Design Reference](docs/assets/reference/photo-gallery.jpg) |
+| *Initial page render matching 1-column layout* | *Subsequent pages appended with scroll-to-top button* | *Original reference design spec* |
 
 ---
 
-## 🧪 Test-Driven Development (TDD) Matrix
+## Design Alignment
 
-Every feature, schema, hook, and UI component was built following strict **Red → Green → Refactor** methodology using **Vitest** and **React Testing Library**.
+The visual layout directly reflects the project reference specification:
+- **Header**: Bold serif `"Photo gallery"` heading (`Georgia, serif`) positioned at the top of the single-column feed.
+- **Photo Row Structure**:
+  - **Left**: Fixed-dimension thumbnail container (`240px × 160px`, `3:2` aspect ratio) with smooth opacity fade-in transition on image load.
+  - **Right**: Vertically centered metadata displaying `"Author: {author}"`, an inline FontAwesome thumbs-up icon (`#1877f2`), and an adjacent click counter.
+- **Interactive Like Button**:
+  - Initialized to `0`.
+  - Increments by `+1` on each click without limit.
+  - Triggers a CSS keyframe micro-bounce animation (`@keyframes thumbs-bounce`).
+  - Maintains isolated state per photograph within React Context.
 
-| Suite | Component / Module | Scope | Tests | Result |
+---
+
+## Technical Highlights
+
+### Core Feed & Infinite Scrolling
+- **Paginated API Ingestion**: Fetches photographic data from the Picsum API (`https://picsum.photos/v2/list?page={page}&limit=10`).
+- **IntersectionObserver Sentinel**: Utilizes a lightweight bottom sentinel element with a forward-looking `250px` root margin to trigger subsequent page fetches before the user reaches the absolute bottom.
+- **Append-Only Feed**: Appends new items seamlessly to the active feed without re-rendering or wiping previously loaded entries.
+- **Graceful Feed Termination**: Detects empty payload responses (`[]`) and unmounts the sentinel, rendering a status notification.
+
+### UX & Performance Engineering
+- **Zero Cumulative Layout Shift (CLS)**: Every image container reserves its dimensions upfront with strict CSS `aspect-ratio: 3 / 2` (`240px × 160px`), preventing layout jumping while images stream in.
+- **Shimmer Skeleton Loaders**:
+  - Initial load renders five placeholder rows with horizontal gradient shimmer keyframes.
+  - Subsequent pagination loads render a single skeleton row below existing items while the next batch is in flight.
+- **Reduced Motion Support**: Disables skeleton shimmer and like bounce animations when `@media (prefers-reduced-motion: reduce)` is detected.
+- **Resilient Error Recovery**: When network or API requests fail, an accessible inline alert (`role="alert"`) provides a "Try Again" action that retries the exact failed page without clearing existing content.
+- **Floating Scroll-To-Top**: A floating circular action button appears when the viewport scrolls beyond `400px`, invoking smooth scrolling to the top on click.
+
+### Security Engineering
+- **Zod v4 Schema Validation**: Validates all incoming API payloads through `PicsumPhotoListSchema` before data enters application state. Malformed fields or unexpected prototypes are caught and rejected safely.
+- **Image Hostname Allowlisting**: Strictly validates that image URLs originate only from verified domains (`picsum.photos`, `fastly.picsum.photos`, `images.unsplash.com`, `unsplash.com`).
+- **Anti-XSS Text Rendering**: Avoids `dangerouslySetInnerHTML` entirely. Untrusted author names containing script tags or HTML injection strings are rendered strictly as safe text nodes.
+- **Prototype Pollution Defense**: Likes state management operates through immutable updates and guards against object prototype property injection (`__proto__`, `constructor`, `prototype`).
+- **Request Deduplication**: In-flight reference guards (`inFlightRef`) prevent redundant duplicate requests when rapid scroll events occur.
+
+---
+
+## Test-Driven Development (TDD) Matrix
+
+All features, data schemas, hooks, and UI components were developed following strict Red-Green-Refactor testing methodology using Vitest and React Testing Library.
+
+| Suite | Component / Module | Scope | Test Count | Status |
 | :--- | :--- | :--- | :---: | :---: |
-| 1 | `schemas.test.js` | Zod API payload validation & domain whitelist | 23 | ✅ Passing |
-| 2 | `galleryReducer.test.js` | Pure reducer state transitions (likes, photos, pages) | 9 | ✅ Passing |
-| 3 | `Header.test.jsx` | Banner landmark & semantic heading | 2 | ✅ Passing |
-| 4 | `ThumbsUpButton.test.jsx` | Micro-bounce animation, unlimited clicks, keyboard a11y | 6 | ✅ Passing |
-| 5 | `PhotoRow.test.jsx` | 1-column layout, 3:2 ratio, fade-in, fallback | 5 | ✅ Passing |
-| 6 | `SkeletonRow.test.jsx` | Shimmer markup, accessibility status role | 1 | ✅ Passing |
-| 7 | `fetchPhotos.test.js` | Network fetch, query params, Zod ingestion | 6 | ✅ Passing |
-| 8 | `usePicsumFeed.test.jsx` | Hook pagination, in-flight guard, error handling | 3 | ✅ Passing |
-| 9 | `useInfiniteScroll.test.jsx`| IntersectionObserver sentinel hook, rootMargin | 3 | ✅ Passing |
-| 10 | `ErrorState.test.jsx` | Alert role, error text display, retry callback | 3 | ✅ Passing |
-| 11 | `ScrollToTop.test.jsx` | Visibility threshold (400px), smooth scroll | 4 | ✅ Passing |
-| 12 | `GalleryFeed.test.jsx` | Feed orchestration, initial/pagination skeletons, end feed | 6 | ✅ Passing |
-| 13 | `App.core.test.jsx` | End-to-end integration, anti-XSS, keyboard navigation | 6 | ✅ Passing |
+| 1 | `schemas.test.js` | Zod schema validation & domain allowlisting | 23 | Passed |
+| 2 | `galleryReducer.test.js` | Pure reducer state transitions & prototype defense | 9 | Passed |
+| 3 | `Header.test.jsx` | Banner landmark & semantic heading structure | 2 | Passed |
+| 4 | `ThumbsUpButton.test.jsx` | Micro-bounce animation, unlimited clicks, keyboard a11y | 6 | Passed |
+| 5 | `PhotoRow.test.jsx` | 1-column layout, 3:2 ratio, fade-in, error fallback | 5 | Passed |
+| 6 | `SkeletonRow.test.jsx` | Shimmer markup, accessibility status role | 1 | Passed |
+| 7 | `fetchPhotos.test.js` | Network fetch, query parameters, Zod parsing | 6 | Passed |
+| 8 | `usePicsumFeed.test.jsx` | Hook pagination, in-flight guard, error handling | 3 | Passed |
+| 9 | `useInfiniteScroll.test.jsx`| IntersectionObserver sentinel hook & rootMargin | 3 | Passed |
+| 10 | `ErrorState.test.jsx` | Alert role, error text display, retry callback | 3 | Passed |
+| 11 | `ScrollToTop.test.jsx` | Visibility threshold (400px) & smooth scroll behavior | 4 | Passed |
+| 12 | `GalleryFeed.test.jsx` | Feed orchestration, initial & pagination skeletons | 6 | Passed |
+| 13 | `App.core.test.jsx` | End-to-end integration, anti-XSS, keyboard navigation | 6 | Passed |
 | **Total** | **13 Test Suites** | **Comprehensive Full-Stack Coverage** | **77** | **100% Passed** |
 
+*Code quality: `oxlint` reported **0 errors and 0 warnings** across all 34 source and test files.*
+
 ---
 
-## 🏗️ Project Architecture
+## Project Structure
 
 ```
 photo-gallary/
@@ -109,11 +121,11 @@ photo-gallary/
 
 ---
 
-## 💻 Getting Started
+## Local Development & Setup
 
 ### Prerequisites
-- Node.js (v18 or higher recommended)
-- npm or pnpm
+- Node.js v18 or higher
+- npm v9 or higher
 
 ### Installation
 
@@ -128,35 +140,28 @@ npm install --legacy-peer-deps
 ### Running Locally
 
 ```bash
-# Start Vite development server
+# Start the Vite development server
 npm run dev
 ```
 
-Open your browser at `http://localhost:5173` to explore the gallery.
+Open `http://localhost:5173` in your browser.
 
-### Running Tests
+### Running Tests & Quality Checks
 
 ```bash
-# Run all 77 unit & integration tests
+# Execute all 77 unit & integration tests
 npm test
 
 # Run code linter
 npm run lint
-```
 
-### Building for Production
-
-```bash
-# Create optimized production bundle
+# Build production bundle
 npm run build
-
-# Preview production build locally
-npm run preview
 ```
 
 ---
 
-## 🔒 Production Security Headers (`vercel.json`)
+## Production Security Headers
 
 The application includes enterprise security headers configured in `vercel.json`:
 - `Content-Security-Policy`: Restricts script and connection sources, allowing only approved image domains (`picsum.photos`, `fastly.picsum.photos`, `unsplash.com`).
