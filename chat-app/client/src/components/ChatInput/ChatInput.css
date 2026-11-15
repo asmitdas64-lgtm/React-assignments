@@ -1,0 +1,128 @@
+.chat-input-form {
+  padding: var(--space-4) 0 var(--space-5);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.chat-input-alert {
+  background-color: rgba(229, 72, 77, 0.1);
+  border: 1px solid var(--danger);
+  border-radius: var(--radius-sm);
+  color: var(--danger);
+  font-size: var(--fs-sm);
+  padding: 6px var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.chat-input-counter {
+  text-align: right;
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-1);
+}
+
+.chat-input-counter--limit {
+  color: var(--danger);
+  font-weight: var(--fw-medium);
+}
+
+.chat-input-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.chat-input-pill-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.chat-input-pill {
+  width: 100%;
+  height: var(--input-height);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background-color: var(--bg-input);
+  padding: 0 48px 0 var(--space-5);
+  font-size: var(--fs-md);
+  color: var(--text-primary);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.chat-input-pill::placeholder {
+  color: var(--text-secondary);
+}
+
+.chat-input-pill:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-ring);
+}
+
+.chat-input-emoji-btn {
+  position: absolute;
+  right: var(--space-3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  transition: color var(--transition), background-color var(--transition);
+}
+
+.chat-input-emoji-btn:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-hover);
+}
+
+.chat-input-emoji-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.chat-input-send-btn {
+  height: var(--input-height);
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-pill);
+  background-color: var(--accent);
+  color: var(--text-on-accent);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-medium);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+  transition: background-color var(--transition), opacity var(--transition);
+}
+
+.chat-input-send-btn:hover:not(:disabled) {
+  background-color: var(--accent-strong);
+}
+
+.chat-input-send-btn:disabled {
+  opacity: 0.5;
+}
+
+.chat-input-send-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+  .chat-input-send-btn {
+    width: var(--input-height);
+    padding: 0;
+  }
+
+  .chat-input-send-btn__label {
+    display: none;
+  }
+}
+.chat-input-emoji-btn--active {
+  color: var(--accent);
+}

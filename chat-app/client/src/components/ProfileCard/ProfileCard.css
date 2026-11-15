@@ -1,0 +1,55 @@
+.profile-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-6) var(--space-6) var(--space-8);
+}
+
+.profile-card__avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.profile-card__status {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: var(--status-dot-size);
+  height: var(--status-dot-size);
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--bg-sidebar);
+  background-color: var(--status-offline);
+}
+
+.profile-card__status--connected {
+  background-color: var(--status-online);
+}
+
+.profile-card__status--connecting {
+  background-color: var(--status-connecting);
+}
+
+.profile-card__status--offline {
+  background-color: var(--status-offline);
+}
+
+.profile-card__info {
+  min-width: 0;
+}
+
+.profile-card__name {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-medium);
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile-card__role {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

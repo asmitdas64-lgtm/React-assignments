@@ -1,0 +1,58 @@
+@keyframes like-pop {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.35);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.like-button {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-width: 32px;
+  min-height: 32px;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  transition: background-color var(--transition), color var(--transition), transform var(--transition);
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.like-button:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.like-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.like-button--active {
+  color: var(--like-active);
+}
+
+.like-button--active:hover {
+  color: var(--like-active);
+}
+
+.like-button--pop {
+  animation: like-pop 300ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .like-button--pop {
+    animation: none;
+  }
+}

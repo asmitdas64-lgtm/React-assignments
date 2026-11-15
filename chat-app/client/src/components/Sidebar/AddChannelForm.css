@@ -1,0 +1,81 @@
+.add-channel-form {
+  padding: var(--space-2) var(--space-6) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.add-channel-form__input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.add-channel-form__input {
+  width: 100%;
+  height: 36px;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border);
+  background-color: var(--bg-sidebar);
+  color: var(--text-primary);
+  font-size: var(--fs-base);
+  padding: 0 54px 0 var(--space-3);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.add-channel-form__input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-ring);
+}
+
+.add-channel-form__input--error {
+  border-color: var(--danger);
+}
+
+.add-channel-form__input--error:focus {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px rgba(229, 72, 77, 0.2);
+}
+
+.add-channel-form__actions {
+  position: absolute;
+  right: var(--space-1);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.add-channel-form__btn {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs-xs);
+  transition: background-color var(--transition), color var(--transition);
+}
+
+.add-channel-form__btn--submit {
+  color: var(--accent);
+}
+
+.add-channel-form__btn--submit:hover {
+  background-color: var(--accent-soft);
+}
+
+.add-channel-form__btn--cancel {
+  color: var(--text-secondary);
+}
+
+.add-channel-form__btn--cancel:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.add-channel-form__error {
+  font-size: var(--fs-xs);
+  color: var(--danger);
+  padding: 2px 0 0 var(--space-1);
+}
