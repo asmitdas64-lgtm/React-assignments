@@ -6,7 +6,7 @@ This repository contains production-grade solutions for UI Engineering internshi
 
 ## Projects
 
-### 1. [Photo Gallery (`photo-gallary/`)](./photo-gallary/)
+### 1. [Photo Gallery (`gallery/`)](./gallery/)
 A single-page, infinite scroll photo gallery based on paginated JSON feeds from Picsum:
 - **Feed & Layout**: 1-column layout matching the visual reference (`photo-gallery.jpg`), displaying photo thumbnail (`240px × 160px`) on the left and `Author: <name>` with a FontAwesome thumbs-up icon on the right.
 - **Infinite Scroll**: Powered by the native `IntersectionObserver` API with a 250px lookahead sentinel, automatically pulling subsequent pages (`page=2`, `page=3`, ...) when approaching the bottom of the feed and appending new articles.
@@ -16,8 +16,8 @@ A single-page, infinite scroll photo gallery based on paginated JSON feeds from 
 - **TDD Coverage**: 13 test suites and 77 automated tests passing 100% with zero linter warnings.
 
 ```bash
-# Quickstart photo-gallary
-cd photo-gallary/client
+# Quickstart gallery
+cd gallery/client
 npm install --legacy-peer-deps
 npm run dev     # Starts Vite development server
 npm test        # Runs all 77 automated tests

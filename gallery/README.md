@@ -82,7 +82,7 @@ All features, data schemas, hooks, and UI components were developed following st
 ## Project Structure
 
 ```
-photo-gallary/
+gallery/
 ├── client/
 │   ├── src/
 │   │   ├── components/
@@ -131,7 +131,7 @@ photo-gallary/
 
 ```bash
 # Navigate to the client directory
-cd photo-gallary/client
+cd gallery/client
 
 # Install dependencies
 npm install --legacy-peer-deps
