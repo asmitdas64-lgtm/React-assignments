@@ -1,12 +1,13 @@
-import { SEED_PHOTOS } from './constants/gallery.js';
 import { GalleryProvider } from './context/GalleryContext.jsx';
+import { usePicsumFeed } from './hooks/usePicsumFeed.js';
 import { useGallery } from './context/useGallery.js';
 import { Header } from './components/Header/Header.jsx';
 import { PhotoRow } from './components/PhotoRow/PhotoRow.jsx';
 import './App.css';
 
 function GalleryStream() {
-  const { photos, likesByPhotoId, likePhoto } = useGallery();
+  const { photos, isLoading, error } = usePicsumFeed();
+  const { likesByPhotoId, likePhoto } = useGallery();
 
   return (
     <section className="gallery-stream" role="feed" aria-label="Photo gallery feed">
@@ -18,13 +19,23 @@ function GalleryStream() {
           onLike={likePhoto}
         />
       ))}
+      {isLoading && (
+        <div className="gallery-loading" role="status" aria-live="polite">
+          Loading photographs…
+        </div>
+      )}
+      {error && (
+        <div className="gallery-error" role="alert">
+          {error}
+        </div>
+      )}
     </section>
   );
 }
 
 export function App() {
   return (
-    <GalleryProvider initialPhotos={SEED_PHOTOS}>
+    <GalleryProvider>
       <div className="gallery-app-root">
         <main className="gallery-main-container">
           <Header />
